@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Upload file to S3</title>
+    <script src="https://unpkg.com/axios@0.2.1/dist/axios.min.js"></script>
+</head>
+
+<body>
+    test upload to s3 through AWS Lambda function and API gatway ()
+    <input type="file" name="file" id="file" onchange="onFileChange()" />
+    <button onclick="onUpload()">Upload :)</button>
+    <button onclick="onRemove()">Remove :(</button>
+
+    <img src="" id="imageFromBucket" />
+
+    <script>
+        const MAX_IMAGE_SIZE = 1000000;
+        let API_ENDPOINT = ''; // dont forget /upload
+        let image = '';
+        let uploadURL = '';
+
+        function onFileChange() {
+            let files = document.getElementById('file').files;
+            if (!files.length) return;
+            this.createImg(files[0]);
+        }
+
+        function createImg(file) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                if (!e.target.result.includes('data:image/jpeg')) {
+                    return alert('Wrong file type - JPG only.')
+                }
+                if (e.target.result.length > MAX_IMAGE_SIZE) {
+                    return alert('Image is loo large.')
+                }
+                this.image = e.target.result
+            }
+            reader.readAsDataURL(file)
+        }
+        function onRemove() {
+            this.image = ''
+        }
+        async function onUpload() {
+            //get link
+            console.log('Upload clicked')
+            // Get the presigned URL
+            if (API_ENDPOINT.length == 0) {
+                alert("change API_urL in HTML to your API URL (api gatway)")
+                return;
+            }
+            const response = await axios({
+                method: 'GET',
+                url: API_ENDPOINT
+            })
+            console.log('Response: ', response)
+            console.log('Uploading: ', this.image)
+            let binary = atob(this.image.split(',')[1])
+            let array = []
+            for (var i = 0; i < binary.length; i++) {
+                array.push(binary.charCodeAt(i))
+            }
+            let blobData = new Blob([new Uint8Array(array)], { type: 'image/jpeg' })
+            console.log('Uploading to: ', response.uploadURL)
+            const result = await fetch(response.uploadURL, {
+                method: 'PUT',
+                body: blobData
+            })
+            console.log('Result: ', result)
+            // Final URL for the user doesn't need the query string params
+            this.uploadURL = response.uploadURL.split('?')[0]
+            document.getElementById('imageFromBucket').setAttribute("src", this.uploadURL)
+        }
+    </script>
+</body>
+
+</html>
