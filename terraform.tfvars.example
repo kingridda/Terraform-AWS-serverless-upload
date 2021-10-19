@@ -8,7 +8,7 @@ aws_secret_key = "YOUR AWS SECRET KEY"
 key_name = "Name of the key pair in AWS"
 
 # Local path to pem file for key pair. 
-# Windows paths need to use double-backslash: Ex. C:\\Users\\Ned\\Pluralsight.pem
+# Windows paths need to use double-backslash: Ex. C:\\Users\\RIDDA\\key_pair.pem
 private_key_path = "path to pem file"
 
 # Prefix value to be used for S3 bucket. You can leave this value as it is
