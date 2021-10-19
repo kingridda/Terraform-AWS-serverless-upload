@@ -4,7 +4,7 @@ Direct and secure upload from front end to S3 built using Terraform.
 
 ![](bucket_upload.PNG)
 Upload uses Amazon API gateway as endpoit for the API and Lambda function 
-that return a signed URL to the front user. this URL is used to upload
+that return a signed URL to the front user. This URL is used to upload
 to S3
 ## Creating the Infrastructure:
 ```
