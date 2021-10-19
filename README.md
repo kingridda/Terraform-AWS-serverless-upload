@@ -25,3 +25,7 @@ PS: uploading using this serverless approach make the server releaved from uploa
 PS: this is secure because no credentials are in the fontend
 
 PS: lambda_function_payload.zip contain the "index.js" file which is the function to be exected as an AWS Lambda function.
+
+## References:
+
+AWS blog on direct upload: https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application/
